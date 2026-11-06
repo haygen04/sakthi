@@ -1,0 +1,109 @@
+# ==============================================================================
+# Automated Manufacturing MIS & Rejection Report Generator - Configuration
+# ==============================================================================
+
+app:
+  name: "Sakthi Manufacturing MIS Generator"
+  environment: "development" # development | staging | production
+  timezone: "Asia/Kolkata"
+
+# Database Configuration
+database:
+  # Primary DB: MySQL 8.0+
+  # Format: mysql+pymysql://<user>:<password>@<host>:<port>/<dbname>
+  url: "${REPORTING_DB_URL:mysql+pymysql://root:password@localhost:3306/mis_reporting}"
+  sqlite_fallback_url: "sqlite:///./mis_reporting.db"
+  pool_size: 10
+  max_overflow: 20
+  echo_sql: false
+
+# PMS Data Source Configuration
+pms:
+  # mode: 'db' | 'api' | 'csv'
+  default_mode: "${PMS_EXTRACT_MODE:csv}"
+
+  db:
+    url: "${PMS_DB_URL:mysql+pymysql://pms_readonly:readonly_secret@pms-server:3306/pms_prod}"
+    timeout_seconds: 30
+
+  api:
+    base_url: "${PMS_API_URL:https://pms.internal.sakthi.com/api/v1}"
+    api_key: "${PMS_API_KEY:your_pms_api_token_here}"
+    timeout_seconds: 30
+    verify_ssl: true
+
+  csv:
+    directory: "sample_data/pms_exports"
+    production_pattern: "pms_production_*.csv"
+    rejection_pattern: "pms_rejection_*.csv"
+
+# Report Output Directories & Layout
+reports:
+  output_dir: "output"
+  date_format: "%Y-%m-%d"
+  currency_symbol: "INR"
+
+  foundry:
+    report_title: "WEEKLY FOUNDRY MIS REPORT"
+    plant_name: "Sakthi Automotive Group - Foundry Division"
+    rejection_warning_pct: 3.5
+    rejection_critical_pct: 4.5
+
+  machine_shop:
+    report_title: "WEEKLY MACHINE SHOP MIS REPORT"
+    plant_name: "Sakthi Automotive Group - Machining Division"
+    rejection_warning_pct: 2.0
+    rejection_critical_pct: 2.8
+
+  monthly_rejection:
+    report_title: "MONTHLY REJECTION & QUALITY COST REPORT"
+    plant_name: "Sakthi Automotive Group - Quality Command"
+
+# Email Delivery Configuration (smtplib)
+notify:
+  enabled: false # Set true in production
+  smtp:
+    host: "${SMTP_HOST:smtp.office365.com}"
+    port: "${SMTP_PORT:587}"
+    use_tls: true
+    user: "${SMTP_USER:reports@sakthi.com}"
+    password: "${SMTP_PASSWORD:smtp_password_here}"
+    sender: "Sakthi MIS Automation <reports@sakthi.com>"
+
+  recipients:
+    foundry_weekly:
+      - "foundry.mgr@sakthi.com"
+      - "qa.head@sakthi.com"
+    machine_shop_weekly:
+      - "machineshop.mgr@sakthi.com"
+      - "plant.head@sakthi.com"
+    monthly_rejection:
+      - "plant.head@sakthi.com"
+      - "operations.director@sakthi.com"
+      - "qa.head@sakthi.com"
+    admin_alerts:
+      - "mis.admin@sakthi.com"
+
+# Scheduler Configuration (APScheduler)
+scheduler:
+  weekly_job_cron: "0 7 * * 1"    # Every Monday at 07:00 AM
+  monthly_job_cron: "0 7 1 * *"   # 1st of every month at 07:00 AM
+  timezone: "Asia/Kolkata"
+
+# UI Theme Color Tokens (Matches Section 5.2 of Plan)
+ui_tokens:
+  bg: "#F4F5F9"
+  surface: "#FBFBFD"
+  surface_alt: "#EEF0F6"
+  text: "#3F4558"
+  text_muted: "#8A90A6"
+  text_faint: "#B3B8CA"
+  accent: "#8E9BFF"
+  accent_soft: "#E6E9FF"
+  good: "#A8DCC4"
+  good_text: "#4E8F73"
+  warn: "#F6DDA8"
+  warn_text: "#A98433"
+  bad: "#F4B9C0"
+  bad_text: "#B25A66"
+

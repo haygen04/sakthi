@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weekly Machine Shop MIS Report</title>
+  <style>
+    /* ==============================================================================
+   MIS & Rejection Reports Print CSS (Section 5.2 & 5.7 Dribbble Aesthetic)
+   ============================================================================== */
+
+@page {
+  size: a4 portrait;
+  margin: 14mm 14mm 16mm 14mm;
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    font-size: 8pt;
+    color: #8A90A6;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  @bottom-left {
+    content: "Sakthi Automotive MIS - Confidential";
+    font-size: 8pt;
+    color: #8A90A6;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  color: #3F4558;
+  background-color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+  font-size: 9.5pt;
+  line-height: 1.45;
+}
+
+/* Header Banner */
+.report-header {
+  border-bottom: 2px solid #8E9BFF;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.report-header h1 {
+  font-size: 16pt;
+  font-weight: 600;
+  color: #3F4558;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.3px;
+}
+
+.report-header .sub-header {
+  font-size: 9pt;
+  color: #8A90A6;
+  margin: 0;
+}
+
+/* KPI Summary Grid */
+.kpi-row {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.kpi-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+  margin-bottom: 14px;
+}
+
+.kpi-card {
+  background-color: #FBFBFD;
+  border: 1px solid #EEF0F6;
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.kpi-card .kpi-label {
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: #8A90A6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.kpi-card .kpi-value {
+  font-size: 16pt;
+  font-weight: 700;
+  color: #3F4558;
+  margin: 0;
+}
+
+.kpi-card .kpi-chip {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 7pt;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Status Chips */
+.chip-good { background-color: #A8DCC4; color: #4E8F73; }
+.chip-warn { background-color: #F6DDA8; color: #A98433; }
+.chip-bad  { background-color: #F4B9C0; color: #B25A66; }
+
+/* Section Titles */
+.section-title {
+  font-size: 11pt;
+  font-weight: 600;
+  color: #3F4558;
+  margin: 16px 0 8px 0;
+  border-left: 3px solid #8E9BFF;
+  padding-left: 8px;
+}
+
+/* Data Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+  font-size: 8.5pt;
+}
+
+.data-table th {
+  background-color: #EEF0F6;
+  color: #3F4558;
+  font-weight: 600;
+  text-align: center;
+  padding: 6px 8px;
+  border: 1px solid #E2E6EF;
+}
+
+.data-table th.text-left { text-align: left; }
+
+.data-table td {
+  padding: 5px 8px;
+  border: 1px solid #EEF0F6;
+  color: #3F4558;
+}
+
+.data-table tr:nth-child(even) td {
+  background-color: #FAFBFD;
+}
+
+.data-table td.text-center { text-align: center; }
+.data-table td.text-right { text-align: right; }
+.data-table td.bold { font-weight: 600; }
+
+.data-table tr.total-row td {
+  background-color: #F4F5F9;
+  font-weight: 700;
+  border-top: 1.5px solid #D5D8E2;
+}
+
+/* Observations Box */
+.observations-box {
+  background-color: #FBFBFD;
+  border: 1px solid #EEF0F6;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+}
+
+.observations-box h4 {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: #3F4558;
+  margin: 0 0 6px 0;
+}
+
+.observations-box ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.observations-box li {
+  font-size: 8.5pt;
+  color: #3F4558;
+  margin-bottom: 4px;
+}
+
+/* Embedded Chart Images */
+.chart-container {
+  text-align: center;
+  margin: 12px 0;
+}
+
+.chart-container img {
+  max-width: 95%;
+  height: auto;
+}
+
+.page-break {
+  page-break-before: always;
+}
+
+  </style>
+</head>
+<body>
+  <div class="report-header">
+    <h1>Sakthi Automotive Group - Machining Division</h1>
+    <p class="sub-header">WEEKLY MACHINE SHOP MANAGEMENT INFORMATION SYSTEM • Period: <strong>2026-W45</strong> • Generated: 06-Nov-2026 15:34</p>
+  </div>
+
+  
+<!-- Executive KPI Banner -->
+<table class="kpi-table">
+  <tr>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Components Machined</div>
+      <div class="kpi-value">3,660</div>
+      <span class="kpi-chip chip-good">Target Adherence: 99.2%</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Finished OK Output</div>
+      <div class="kpi-value">3,604</div>
+      <span class="kpi-chip chip-good">Pass Count</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Machining Rejection</div>
+      <div class="kpi-value" style="color: #B25A66;">1.53%</div>
+      <span class="kpi-chip chip-good">56 Rejected Pcs</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">First-Pass Yield</div>
+      <div class="kpi-value" style="color: #4E8F73;">98.47%</div>
+      <span class="kpi-chip chip-good">Stable Operations</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Scrap Loss Cost</div>
+      <div class="kpi-value">INR 10,400</div>
+      <span class="kpi-chip chip-warn">Direct Loss Cost</span>
+    </td>
+  </tr>
+</table>
+
+<!-- Key Engineering Observations -->
+<div class="observations-box">
+  <h4>Executive Observations & Action Points</h4>
+  <ul>
+    
+    <li>Machine Shop completed 3,660 precision components with target adherence at 99.2%.</li>
+    
+    <li>Overall machining rejection stood at 1.53%, well within the target threshold of 2.00%.</li>
+    
+    <li>CNC rotor cells demonstrated high uptime with dimensional out-of-spec remaining the chief focus area.</li>
+    
+  </ul>
+</div>
+
+<!-- Section 1: Daily Machining Progress -->
+<div class="section-title">1. Daily Machining Progress</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Day</th>
+      <th class="text-right">Target</th>
+      <th class="text-right">Machined</th>
+      <th class="text-right">OK Output</th>
+      <th class="text-right">Rejected</th>
+      <th class="text-right">Rejection %</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td class="text-center">2026-11-02</td>
+      <td class="text-center">Monday</td>
+      <td class="text-right">1,220</td>
+      <td class="text-right bold">1,205</td>
+      <td class="text-right">1,186</td>
+      <td class="text-right">19</td>
+      <td class="text-right bold">1.58%</td>
+      <td class="text-center"><span class="kpi-chip chip-good">Good</span></td>
+    </tr>
+    
+    <tr>
+      <td class="text-center">2026-11-03</td>
+      <td class="text-center">Tuesday</td>
+      <td class="text-right">550</td>
+      <td class="text-right bold">546</td>
+      <td class="text-right">537</td>
+      <td class="text-right">9</td>
+      <td class="text-right bold">1.65%</td>
+      <td class="text-center"><span class="kpi-chip chip-good">Good</span></td>
+    </tr>
+    
+    <tr>
+      <td class="text-center">2026-11-04</td>
+      <td class="text-center">Wednesday</td>
+      <td class="text-right">570</td>
+      <td class="text-right bold">570</td>
+      <td class="text-right">561</td>
+      <td class="text-right">9</td>
+      <td class="text-right bold">1.58%</td>
+      <td class="text-center"><span class="kpi-chip chip-good">Good</span></td>
+    </tr>
+    
+    <tr>
+      <td class="text-center">2026-11-05</td>
+      <td class="text-center">Thursday</td>
+      <td class="text-right">350</td>
+      <td class="text-right bold">345</td>
+      <td class="text-right">340</td>
+      <td class="text-right">5</td>
+      <td class="text-right bold">1.45%</td>
+      <td class="text-center"><span class="kpi-chip chip-good">Good</span></td>
+    </tr>
+    
+    <tr>
+      <td class="text-center">2026-11-06</td>
+      <td class="text-center">Friday</td>
+      <td class="text-right">350</td>
+      <td class="text-right bold">350</td>
+      <td class="text-right">345</td>
+      <td class="text-right">5</td>
+      <td class="text-right bold">1.43%</td>
+      <td class="text-center"><span class="kpi-chip chip-good">Good</span></td>
+    </tr>
+    
+    <tr>
+      <td class="text-center">2026-11-07</td>
+      <td class="text-center">Saturday</td>
+      <td class="text-right">350</td>
+      <td class="text-right bold">346</td>
+      <td class="text-right">341</td>
+      <td class="text-right">5</td>
+      <td class="text-right bold">1.45%</td>
+      <td class="text-center"><span class="kpi-chip chip-good">Good</span></td>
+    </tr>
+    
+    <tr>
+      <td class="text-center">2026-11-08</td>
+      <td class="text-center">Sunday</td>
+      <td class="text-right">300</td>
+      <td class="text-right bold">298</td>
+      <td class="text-right">294</td>
+      <td class="text-right">4</td>
+      <td class="text-right bold">1.34%</td>
+      <td class="text-center"><span class="kpi-chip chip-good">Good</span></td>
+    </tr>
+    
+    <tr class="total-row">
+      <td colspan="2" class="text-center">WEEKLY TOTAL</td>
+      <td class="text-right">3,690</td>
+      <td class="text-right">3,660</td>
+      <td class="text-right">3,604</td>
+      <td class="text-right">56</td>
+      <td class="text-right">1.53%</td>
+      <td class="text-center">-</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Section 2: Machine Cell Performance -->
+<div class="section-title">2. Machine Cell & Line Performance</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Machine Code</th>
+      <th class="text-left">Machine Description</th>
+      <th>Cell / Line</th>
+      <th class="text-right">Target Pcs</th>
+      <th class="text-right">Machined Pcs</th>
+      <th class="text-right">Rejected Pcs</th>
+      <th class="text-right">Rejection %</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td class="text-center bold">MC-CNC-01</td>
+      <td class="text-left">Doosan Twin Spindle CNC 01</td>
+      <td class="text-center">Rotor Line A</td>
+      <td class="text-right">2,750</td>
+      <td class="text-right bold">2,734</td>
+      <td class="text-right">40</td>
+      <td class="text-right bold">1.46%</td>
+    </tr>
+    
+    <tr>
+      <td class="text-center bold">MC-CNC-02</td>
+      <td class="text-left">Doosan Twin Spindle CNC 02</td>
+      <td class="text-center">Rotor Line A</td>
+      <td class="text-right">500</td>
+      <td class="text-right bold">493</td>
+      <td class="text-right">9</td>
+      <td class="text-right bold">1.83%</td>
+    </tr>
+    
+    <tr>
+      <td class="text-center bold">MC-VMC-02</td>
+      <td class="text-left">Makino High Speed VMC 02</td>
+      <td class="text-center">Knuckle Line</td>
+      <td class="text-right">220</td>
+      <td class="text-right bold">218</td>
+      <td class="text-right">4</td>
+      <td class="text-right bold">1.83%</td>
+    </tr>
+    
+    <tr>
+      <td class="text-center bold">MC-VMC-01</td>
+      <td class="text-left">Makino High Speed VMC 01</td>
+      <td class="text-center">Knuckle Line</td>
+      <td class="text-right">220</td>
+      <td class="text-right bold">215</td>
+      <td class="text-right">3</td>
+      <td class="text-right bold">1.40%</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+<!-- Section 3: Machining Defects -->
+<div class="section-title">3. Machining Defect Analysis</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Defect Code</th>
+      <th class="text-left">Defect Description</th>
+      <th>Category</th>
+      <th class="text-right">Rejected Pcs</th>
+      <th class="text-right">Scrap Pcs</th>
+      <th class="text-right">Rework Pcs</th>
+      <th class="text-right">Loss Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td class="text-center bold">DEF-DIM-OOT</td>
+      <td class="text-left">Dimensional Out of Tolerance</td>
+      <td class="text-center">MACHINING</td>
+      <td class="text-right">26</td>
+      <td class="text-right">10</td>
+      <td class="text-right">16</td>
+      <td class="text-right">INR 3,405</td>
+    </tr>
+    
+    <tr>
+      <td class="text-center bold">DEF-RUNOUT</td>
+      <td class="text-left">Face Runout / Dynamic Wobble</td>
+      <td class="text-center">MACHINING</td>
+      <td class="text-right">8</td>
+      <td class="text-right">4</td>
+      <td class="text-right">4</td>
+      <td class="text-right">INR 1,180</td>
+    </tr>
+    
+    <tr>
+      <td class="text-center bold">DEF-SUB-POR</td>
+      <td class="text-left">Subsurface Casting Porosity revealed</td>
+      <td class="text-center">RAW_MATERIAL</td>
+      <td class="text-right">8</td>
+      <td class="text-right">8</td>
+      <td class="text-right">0</td>
+      <td class="text-right">INR 3,010</td>
+    </tr>
+    
+    <tr>
+      <td class="text-center bold">DEF-SURF-CHAT</td>
+      <td class="text-left">Surface Roughness / Chatter Marks</td>
+      <td class="text-center">TOOLING</td>
+      <td class="text-right">6</td>
+      <td class="text-right">3</td>
+      <td class="text-right">3</td>
+      <td class="text-right">INR 885</td>
+    </tr>
+    
+    <tr>
+      <td class="text-center bold">DEF-BURR</td>
+      <td class="text-left">Heavy Burr / Incomplete Chamfer</td>
+      <td class="text-center">DEBURRING</td>
+      <td class="text-right">4</td>
+      <td class="text-right">0</td>
+      <td class="text-right">4</td>
+      <td class="text-right">INR 0</td>
+    </tr>
+    
+    <tr>
+      <td class="text-center bold">DEF-TOOL-BRK</td>
+      <td class="text-left">Drill / Tap Breakage inside part</td>
+      <td class="text-center">TOOLING</td>
+      <td class="text-right">4</td>
+      <td class="text-right">4</td>
+      <td class="text-right">0</td>
+      <td class="text-right">INR 1,920</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+  <div style="margin-top: 20px; border-top: 1px solid #EEF0F6; padding-top: 6px; font-size: 7.5pt; color: #8A90A6; text-align: center;">
+    Sakthi Automotive Group • Quality Assurance & Production MIS • System Generated Document
+  </div>
+</body>
+</html>

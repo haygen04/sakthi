@@ -1,0 +1,98 @@
+# Active Configuration (defaults to safe local testing)
+app:
+  name: "Sakthi Manufacturing MIS Generator"
+  environment: "development"
+  timezone: "Asia/Kolkata"
+
+database:
+  url: "mysql+pymysql://root:password@localhost:3306/mis_reporting"
+  sqlite_fallback_url: "sqlite:///mis_reporting.db"
+  use_sqlite_fallback: true
+  pool_size: 5
+  max_overflow: 10
+  echo_sql: false
+
+pms:
+  default_mode: "csv"
+
+  db:
+    url: "mysql+pymysql://root:password@localhost:3306/mis_reporting"
+    timeout_seconds: 30
+
+  api:
+    base_url: "http://localhost:8080/api/pms"
+    api_key: ""
+    timeout_seconds: 15
+    verify_ssl: false
+
+  csv:
+    directory: "sample_data/pms_exports"
+    production_pattern: "pms_production_*.csv"
+    rejection_pattern: "pms_rejection_*.csv"
+
+reports:
+  output_dir: "output"
+  date_format: "%Y-%m-%d"
+  currency_symbol: "INR"
+
+  foundry:
+    report_title: "WEEKLY FOUNDRY MIS REPORT"
+    plant_name: "Sakthi Automotive Group - Foundry Division"
+    rejection_warning_pct: 3.5
+    rejection_critical_pct: 4.5
+
+  machine_shop:
+    report_title: "WEEKLY MACHINE SHOP MIS REPORT"
+    plant_name: "Sakthi Automotive Group - Machining Division"
+    rejection_warning_pct: 2.0
+    rejection_critical_pct: 2.8
+
+  monthly_rejection:
+    report_title: "MONTHLY REJECTION & QUALITY COST REPORT"
+    plant_name: "Sakthi Automotive Group - Quality Command"
+
+notify:
+  enabled: false
+  smtp:
+    host: "localhost"
+    port: 1025
+    use_tls: false
+    user: ""
+    password: ""
+    sender: "Sakthi MIS Automation <reports@sakthi.com>"
+
+  recipients:
+    foundry_weekly:
+      - "foundry.mgr@sakthi.com"
+      - "qa.head@sakthi.com"
+    machine_shop_weekly:
+      - "machineshop.mgr@sakthi.com"
+      - "plant.head@sakthi.com"
+    monthly_rejection:
+      - "plant.head@sakthi.com"
+      - "operations.director@sakthi.com"
+      - "qa.head@sakthi.com"
+    admin_alerts:
+      - "mis.admin@sakthi.com"
+
+scheduler:
+  weekly_job_cron: "0 7 * * 1"
+  monthly_job_cron: "0 7 1 * *"
+  timezone: "Asia/Kolkata"
+
+ui_tokens:
+  bg: "#F4F5F9"
+  surface: "#FBFBFD"
+  surface_alt: "#EEF0F6"
+  text: "#3F4558"
+  text_muted: "#8A90A6"
+  text_faint: "#B3B8CA"
+  accent: "#8E9BFF"
+  accent_soft: "#E6E9FF"
+  good: "#A8DCC4"
+  good_text: "#4E8F73"
+  warn: "#F6DDA8"
+  warn_text: "#A98433"
+  bad: "#F4B9C0"
+  bad_text: "#B25A66"
+

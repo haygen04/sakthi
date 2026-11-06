@@ -1,0 +1,41 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# C extensions
+*.obj
+*.o
+*.a
+*.lib
+
+# Pytest & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Python virtual environment
+venv/
+.venv/
+env/
+.env
+
+# Generated temp charts
+output/**/temp_charts/
+output/charts_preview/
+
+# Java / Maven build artifacts
+backend/target/
+*.class
+*.jar
+*.war
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.iml
+.DS_Store
+Thumbs.db

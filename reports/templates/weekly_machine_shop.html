@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Executive KPI Banner -->
+<table class="kpi-table">
+  <tr>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Components Machined</div>
+      <div class="kpi-value">{{ "{:,}".format(kpis.produced_qty) }}</div>
+      <span class="kpi-chip chip-good">Target Adherence: {{ "{:.1f}%".format(kpis.target_adherence_pct) }}</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Finished OK Output</div>
+      <div class="kpi-value">{{ "{:,}".format(kpis.accepted_qty) }}</div>
+      <span class="kpi-chip chip-good">Pass Count</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Machining Rejection</div>
+      <div class="kpi-value" style="color: #B25A66;">{{ "{:.2f}%".format(kpis.rejection_pct) }}</div>
+      <span class="kpi-chip chip-{{ kpis.status }}">{{ kpis.rejected_qty }} Rejected Pcs</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">First-Pass Yield</div>
+      <div class="kpi-value" style="color: #4E8F73;">{{ "{:.2f}%".format(kpis.first_pass_yield_pct) }}</div>
+      <span class="kpi-chip chip-good">Stable Operations</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Scrap Loss Cost</div>
+      <div class="kpi-value">INR {{ "{:,.0f}".format(kpis.scrap_cost) }}</div>
+      <span class="kpi-chip chip-warn">Direct Loss Cost</span>
+    </td>
+  </tr>
+</table>
+
+<!-- Key Engineering Observations -->
+<div class="observations-box">
+  <h4>Executive Observations & Action Points</h4>
+  <ul>
+    {% for obs in observations %}
+    <li>{{ obs }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<!-- Section 1: Daily Machining Progress -->
+<div class="section-title">1. Daily Machining Progress</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Day</th>
+      <th class="text-right">Target</th>
+      <th class="text-right">Machined</th>
+      <th class="text-right">OK Output</th>
+      <th class="text-right">Rejected</th>
+      <th class="text-right">Rejection %</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in daily_rows %}
+    <tr>
+      <td class="text-center">{{ r.date_key }}</td>
+      <td class="text-center">{{ r.day_name }}</td>
+      <td class="text-right">{{ "{:,}".format(r.target_qty) }}</td>
+      <td class="text-right bold">{{ "{:,}".format(r.produced_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(r.accepted_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(r.rejected_qty) }}</td>
+      <td class="text-right bold">{{ "{:.2f}%".format(r.rejection_pct) }}</td>
+      <td class="text-center"><span class="kpi-chip chip-{{ r.status }}">{{ r.status_text }}</span></td>
+    </tr>
+    {% endfor %}
+    <tr class="total-row">
+      <td colspan="2" class="text-center">WEEKLY TOTAL</td>
+      <td class="text-right">{{ "{:,}".format(daily_totals.target_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(daily_totals.produced_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(daily_totals.accepted_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(daily_totals.rejected_qty) }}</td>
+      <td class="text-right">{{ "{:.2f}%".format(daily_totals.rejection_pct) }}</td>
+      <td class="text-center">-</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Section 2: Machine Cell Performance -->
+<div class="section-title">2. Machine Cell & Line Performance</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Machine Code</th>
+      <th class="text-left">Machine Description</th>
+      <th>Cell / Line</th>
+      <th class="text-right">Target Pcs</th>
+      <th class="text-right">Machined Pcs</th>
+      <th class="text-right">Rejected Pcs</th>
+      <th class="text-right">Rejection %</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for m in machine_rows %}
+    <tr>
+      <td class="text-center bold">{{ m.machine_code }}</td>
+      <td class="text-left">{{ m.machine_name }}</td>
+      <td class="text-center">{{ m.line_name }}</td>
+      <td class="text-right">{{ "{:,}".format(m.target_qty) }}</td>
+      <td class="text-right bold">{{ "{:,}".format(m.produced_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(m.rejected_qty) }}</td>
+      <td class="text-right bold">{{ "{:.2f}%".format(m.rejection_pct) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Section 3: Machining Defects -->
+<div class="section-title">3. Machining Defect Analysis</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Defect Code</th>
+      <th class="text-left">Defect Description</th>
+      <th>Category</th>
+      <th class="text-right">Rejected Pcs</th>
+      <th class="text-right">Scrap Pcs</th>
+      <th class="text-right">Rework Pcs</th>
+      <th class="text-right">Loss Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in defect_rows %}
+    <tr>
+      <td class="text-center bold">{{ d.defect_code }}</td>
+      <td class="text-left">{{ d.defect_name }}</td>
+      <td class="text-center">{{ d.category }}</td>
+      <td class="text-right">{{ "{:,}".format(d.rejected_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(d.scrap_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(d.reworkable_qty) }}</td>
+      <td class="text-right">INR {{ "{:,.0f}".format(d.scrap_cost) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

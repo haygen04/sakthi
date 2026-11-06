@@ -1,0 +1,444 @@
+/* ==========================================================================
+   Sakthi Automotive Group — Manufacturing MIS Dashboard
+   Design System: Dribbble Aesthetic (Low Contrast, Calm Surfaces, Pastel Pills)
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --bg:            #F4F5F9;
+  --surface:       #FBFBFD;
+  --surface-alt:   #EEF0F6;
+  --surface-hover: #F0F2F8;
+
+  /* Typography Colors */
+  --text:          #3F4558;
+  --text-muted:    #8A90A6;
+  --text-faint:    #B3B8CA;
+
+  /* Brand & Accents */
+  --accent:        #8E9BFF;
+  --accent-soft:   #E6E9FF;
+  --accent-dark:   #6C7BE8;
+
+  /* Status Colors */
+  --good-bg:       #E8F6F0;
+  --good-chip:     #A8DCC4;
+  --good-text:     #4E8F73;
+
+  --warn-bg:       #FCF7EC;
+  --warn-chip:     #F6DDA8;
+  --warn-text:     #A98433;
+
+  --bad-bg:        #FDF0F2;
+  --bad-chip:      #F4B9C0;
+  --bad-text:      #B25A66;
+
+  /* Pastel Chart Palette */
+  --sky:           #B7D8F5;
+  --lavender:      #D8D0F5;
+  --mint:          #C2EBD9;
+  --peach:         #F5D0C5;
+
+  /* Geometry & Shadows */
+  --radius-card:   20px;
+  --radius-inner:  14px;
+  --radius-pill:   9999px;
+  --shadow-subtle: 0 4px 20px rgba(63, 69, 88, 0.04);
+  --shadow-hover:  0 8px 28px rgba(63, 69, 88, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   App Container & Header
+   -------------------------------------------------------------------------- */
+.app-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 32px 40px;
+  width: 100%;
+}
+
+.top-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-badge {
+  background: linear-gradient(135deg, var(--accent), var(--lavender));
+  color: white;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(142, 155, 255, 0.3);
+}
+
+.brand-title h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--text);
+}
+
+.brand-title p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   Segmented Pill Controls & Buttons
+   -------------------------------------------------------------------------- */
+.segmented-control {
+  background-color: var(--surface-alt);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  display: inline-flex;
+  gap: 2px;
+}
+
+.segment-btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.segment-btn:hover {
+  color: var(--text);
+}
+
+.segment-btn.active {
+  background-color: var(--surface);
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(63, 69, 88, 0.06);
+}
+
+.primary-btn {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 10px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(142, 155, 255, 0.25);
+}
+
+.primary-btn:hover {
+  background-color: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+.secondary-btn {
+  background-color: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--surface-alt);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+  background-color: var(--surface-hover);
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   Banner & Filter Bar
+   -------------------------------------------------------------------------- */
+.dashboard-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filters-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.select-pill {
+  background-color: var(--surface);
+  border: 1px solid var(--surface-alt);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select-pill:focus {
+  border-color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   KPI Metric Cards
+   -------------------------------------------------------------------------- */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.kpi-card {
+  background-color: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow-subtle);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.chip-good { background-color: var(--good-chip); color: var(--good-text); }
+.chip-warn { background-color: var(--warn-chip); color: var(--warn-text); }
+.chip-bad  { background-color: var(--bad-chip);  color: var(--bad-text); }
+
+.kpi-val {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.kpi-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Main Visuals Grid
+   -------------------------------------------------------------------------- */
+.visuals-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background-color: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 26px 28px;
+  box-shadow: var(--shadow-subtle);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.card-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.chart-box {
+  width: 100%;
+  min-height: 320px;
+}
+
+/* --------------------------------------------------------------------------
+   Report Library Table
+   -------------------------------------------------------------------------- */
+.table-card {
+  margin-bottom: 32px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 10px;
+}
+
+.custom-table th {
+  background-color: var(--surface-alt);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 18px;
+  text-align: left;
+}
+
+.custom-table th:first-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+.custom-table th:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+
+.custom-table td {
+  padding: 16px 18px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--surface-alt);
+  color: var(--text);
+}
+
+.custom-table tr:last-child td {
+  border-bottom: none;
+}
+
+.file-pills {
+  display: flex;
+  gap: 8px;
+}
+
+.file-pill {
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.file-pill-excel { background-color: var(--good-bg); color: var(--good-text); }
+.file-pill-pdf   { background-color: var(--bad-bg);  color: var(--bad-text); }
+.file-pill-html  { background-color: var(--accent-soft); color: var(--accent-dark); }
+
+.file-pill:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.96);
+}
+
+/* --------------------------------------------------------------------------
+   Toast Notifications
+   -------------------------------------------------------------------------- */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background-color: var(--surface);
+  color: var(--text);
+  padding: 14px 24px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 1000;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Layout
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .visuals-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .app-container { padding: 16px; }
+  .kpi-grid { grid-template-columns: 1fr; }
+  .top-navbar { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+

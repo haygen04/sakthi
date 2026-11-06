@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Executive KPI Banner -->
+<table class="kpi-table">
+  <tr>
+    <td class="kpi-card" style="width: 25%;">
+      <div class="kpi-label">Total Plant Production</div>
+      <div class="kpi-value">{{ "{:,}".format(kpis.produced_qty) }}</div>
+      <span class="kpi-chip chip-good">Output Target: {{ "{:,}".format(kpis.target_qty) }}</span>
+    </td>
+    <td class="kpi-card" style="width: 25%;">
+      <div class="kpi-label">Total Rejected Castings</div>
+      <div class="kpi-value" style="color: #B25A66;">{{ "{:,}".format(kpis.rejected_qty) }}</div>
+      <span class="kpi-chip chip-bad">Defect Count</span>
+    </td>
+    <td class="kpi-card" style="width: 25%;">
+      <div class="kpi-label">Plant Rejection %</div>
+      <div class="kpi-value" style="color: #A98433;">{{ "{:.2f}%".format(kpis.rejection_pct) }}</div>
+      <span class="kpi-chip chip-warn">Control Limit: 2.80%</span>
+    </td>
+    <td class="kpi-card" style="width: 25%;">
+      <div class="kpi-label">Total Quality Loss (COP)</div>
+      <div class="kpi-value">INR {{ "{:,.0f}".format(kpis.scrap_cost) }}</div>
+      <span class="kpi-chip chip-bad">Cost of Poor Quality</span>
+    </td>
+  </tr>
+</table>
+
+<!-- Key Engineering Observations -->
+<div class="observations-box">
+  <h4>Monthly Quality Assessment & CAPA Directions</h4>
+  <ul>
+    {% for obs in observations %}
+    <li>{{ obs }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<!-- Section 1: Executive Shop Quality Comparison -->
+<div class="section-title">1. Division Quality Performance Summary</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Division</th>
+      <th class="text-left">Shop Description</th>
+      <th class="text-right">Produced Pcs</th>
+      <th class="text-right">Accepted Pcs</th>
+      <th class="text-right">Rejected Pcs</th>
+      <th class="text-right">Rejection %</th>
+      <th class="text-right">Yield %</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in shop_rows %}
+    <tr>
+      <td class="text-center bold">{{ s.shop_code }}</td>
+      <td class="text-left">{{ s.shop_name }}</td>
+      <td class="text-right">{{ "{:,}".format(s.produced_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(s.accepted_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(s.rejected_qty) }}</td>
+      <td class="text-right bold">{{ "{:.2f}%".format(s.rejection_pct) }}</td>
+      <td class="text-right">{{ "{:.2f}%".format(s.first_pass_yield_pct) }}</td>
+      <td class="text-center"><span class="kpi-chip chip-{{ s.status }}">{{ s.status_text }}</span></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Section 2: Defect Pareto -->
+<div class="section-title">2. Plant-Wide Defect Pareto Analysis</div>
+<div class="chart-container">
+  {% if charts.defect_pareto %}
+  <img src="{{ charts.defect_pareto }}" alt="Defect Pareto">
+  {% endif %}
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Shop</th>
+      <th>Defect Code</th>
+      <th class="text-left">Defect Description</th>
+      <th>Category</th>
+      <th class="text-right">Rejected Pcs</th>
+      <th class="text-right">Scrap Loss Cost</th>
+      <th class="text-right">% Share</th>
+      <th class="text-right">Cumulative %</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in defect_rows %}
+    <tr>
+      <td class="text-center">{{ d.shop_code }}</td>
+      <td class="text-center bold">{{ d.defect_code }}</td>
+      <td class="text-left">{{ d.defect_name }}</td>
+      <td class="text-center">{{ d.category }}</td>
+      <td class="text-right">{{ "{:,}".format(d.rejected_qty) }}</td>
+      <td class="text-right">INR {{ "{:,.0f}".format(d.scrap_cost) }}</td>
+      <td class="text-right">{{ "{:.1f}%".format(d.defect_pct) }}</td>
+      <td class="text-right bold">{{ "{:.1f}%".format(d.cumulative_pct) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

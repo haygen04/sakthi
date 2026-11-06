@@ -1,0 +1,194 @@
+/* ==============================================================================
+   MIS & Rejection Reports Print CSS (Section 5.2 & 5.7 Dribbble Aesthetic)
+   ============================================================================== */
+
+@page {
+  size: a4 portrait;
+  margin: 14mm 14mm 16mm 14mm;
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    font-size: 8pt;
+    color: #8A90A6;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  @bottom-left {
+    content: "Sakthi Automotive MIS - Confidential";
+    font-size: 8pt;
+    color: #8A90A6;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  color: #3F4558;
+  background-color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+  font-size: 9.5pt;
+  line-height: 1.45;
+}
+
+/* Header Banner */
+.report-header {
+  border-bottom: 2px solid #8E9BFF;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.report-header h1 {
+  font-size: 16pt;
+  font-weight: 600;
+  color: #3F4558;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.3px;
+}
+
+.report-header .sub-header {
+  font-size: 9pt;
+  color: #8A90A6;
+  margin: 0;
+}
+
+/* KPI Summary Grid */
+.kpi-row {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.kpi-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+  margin-bottom: 14px;
+}
+
+.kpi-card {
+  background-color: #FBFBFD;
+  border: 1px solid #EEF0F6;
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.kpi-card .kpi-label {
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: #8A90A6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.kpi-card .kpi-value {
+  font-size: 16pt;
+  font-weight: 700;
+  color: #3F4558;
+  margin: 0;
+}
+
+.kpi-card .kpi-chip {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 7pt;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Status Chips */
+.chip-good { background-color: #A8DCC4; color: #4E8F73; }
+.chip-warn { background-color: #F6DDA8; color: #A98433; }
+.chip-bad  { background-color: #F4B9C0; color: #B25A66; }
+
+/* Section Titles */
+.section-title {
+  font-size: 11pt;
+  font-weight: 600;
+  color: #3F4558;
+  margin: 16px 0 8px 0;
+  border-left: 3px solid #8E9BFF;
+  padding-left: 8px;
+}
+
+/* Data Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+  font-size: 8.5pt;
+}
+
+.data-table th {
+  background-color: #EEF0F6;
+  color: #3F4558;
+  font-weight: 600;
+  text-align: center;
+  padding: 6px 8px;
+  border: 1px solid #E2E6EF;
+}
+
+.data-table th.text-left { text-align: left; }
+
+.data-table td {
+  padding: 5px 8px;
+  border: 1px solid #EEF0F6;
+  color: #3F4558;
+}
+
+.data-table tr:nth-child(even) td {
+  background-color: #FAFBFD;
+}
+
+.data-table td.text-center { text-align: center; }
+.data-table td.text-right { text-align: right; }
+.data-table td.bold { font-weight: 600; }
+
+.data-table tr.total-row td {
+  background-color: #F4F5F9;
+  font-weight: 700;
+  border-top: 1.5px solid #D5D8E2;
+}
+
+/* Observations Box */
+.observations-box {
+  background-color: #FBFBFD;
+  border: 1px solid #EEF0F6;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+}
+
+.observations-box h4 {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: #3F4558;
+  margin: 0 0 6px 0;
+}
+
+.observations-box ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.observations-box li {
+  font-size: 8.5pt;
+  color: #3F4558;
+  margin-bottom: 4px;
+}
+
+/* Embedded Chart Images */
+.chart-container {
+  text-align: center;
+  margin: 12px 0;
+}
+
+.chart-container img {
+  max-width: 95%;
+  height: auto;
+}
+
+.page-break {
+  page-break-before: always;
+}

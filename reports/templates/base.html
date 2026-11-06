@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <style>
+    {{ inline_css | safe }}
+  </style>
+</head>
+<body>
+  <div class="report-header">
+    <h1>{{ plant_name }}</h1>
+    <p class="sub-header">{{ report_title }} • Period: <strong>{{ period_key }}</strong> • Generated: {{ generated_at }}</p>
+  </div>
+
+  {% block content %}{% endblock %}
+
+  <div style="margin-top: 20px; border-top: 1px solid #EEF0F6; padding-top: 6px; font-size: 7.5pt; color: #8A90A6; text-align: center;">
+    Sakthi Automotive Group • Quality Assurance & Production MIS • System Generated Document
+  </div>
+</body>
+</html>

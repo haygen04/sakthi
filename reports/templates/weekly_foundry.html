@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Executive KPI Banner -->
+<table class="kpi-table">
+  <tr>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Poured Castings</div>
+      <div class="kpi-value">{{ "{:,}".format(kpis.produced_qty) }}</div>
+      <span class="kpi-chip chip-good">Output Target: {{ "{:,}".format(kpis.target_qty) }}</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Liquid Metal</div>
+      <div class="kpi-value">{{ "{:,.1f}".format(kpis.total_weight_mt) }} <span style="font-size: 10pt; font-weight: normal;">MT</span></div>
+      <span class="kpi-chip chip-good">Molding Yield: 96.6%</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Foundry Rejection</div>
+      <div class="kpi-value" style="color: #B25A66;">{{ "{:.2f}%".format(kpis.rejection_pct) }}</div>
+      <span class="kpi-chip chip-{{ kpis.status }}">{{ kpis.rejected_qty }} Rejected Pcs</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">First-Pass Yield</div>
+      <div class="kpi-value" style="color: #4E8F73;">{{ "{:.2f}%".format(kpis.first_pass_yield_pct) }}</div>
+      <span class="kpi-chip chip-good">{{ "{:,}".format(kpis.accepted_qty) }} OK Pcs</span>
+    </td>
+    <td class="kpi-card" style="width: 20%;">
+      <div class="kpi-label">Scrap Loss Cost</div>
+      <div class="kpi-value">INR {{ "{:,.0f}".format(kpis.scrap_cost) }}</div>
+      <span class="kpi-chip chip-warn">Direct Material Cost</span>
+    </td>
+  </tr>
+</table>
+
+<!-- Key Engineering Observations -->
+<div class="observations-box">
+  <h4>Executive Observations & Action Points</h4>
+  <ul>
+    {% for obs in observations %}
+    <li>{{ obs }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<!-- Section 1: Daily Production & Rejection -->
+<div class="section-title">1. Daily Production & Rejection Summary</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Day</th>
+      <th class="text-right">Target</th>
+      <th class="text-right">Poured</th>
+      <th class="text-right">Accepted</th>
+      <th class="text-right">Rejected</th>
+      <th class="text-right">Rejection %</th>
+      <th class="text-right">Weight (MT)</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in daily_rows %}
+    <tr>
+      <td class="text-center">{{ r.date_key }}</td>
+      <td class="text-center">{{ r.day_name }}</td>
+      <td class="text-right">{{ "{:,}".format(r.target_qty) }}</td>
+      <td class="text-right bold">{{ "{:,}".format(r.produced_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(r.accepted_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(r.rejected_qty) }}</td>
+      <td class="text-right bold">{{ "{:.2f}%".format(r.rejection_pct) }}</td>
+      <td class="text-right">{{ "{:.2f}".format(r.weight_mt) }}</td>
+      <td class="text-center"><span class="kpi-chip chip-{{ r.status }}">{{ r.status_text }}</span></td>
+    </tr>
+    {% endfor %}
+    <tr class="total-row">
+      <td colspan="2" class="text-center">WEEKLY TOTAL</td>
+      <td class="text-right">{{ "{:,}".format(daily_totals.target_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(daily_totals.produced_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(daily_totals.accepted_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(daily_totals.rejected_qty) }}</td>
+      <td class="text-right">{{ "{:.2f}%".format(daily_totals.rejection_pct) }}</td>
+      <td class="text-right">{{ "{:.2f}".format(daily_totals.weight_mt) }}</td>
+      <td class="text-center">-</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Embedded Visual Charts -->
+<div class="chart-container">
+  {% if charts.production_trend %}
+  <img src="{{ charts.production_trend }}" alt="Foundry Daily Production Trend">
+  {% endif %}
+</div>
+
+<div class="page-break"></div>
+
+<!-- Section 2: Shift Analysis -->
+<div class="section-title">2. Shift-wise Performance</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Shift Name</th>
+      <th class="text-right">Target Pcs</th>
+      <th class="text-right">Poured Pcs</th>
+      <th class="text-right">Accepted Pcs</th>
+      <th class="text-right">Rejected Pcs</th>
+      <th class="text-right">Rejection %</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in shift_rows %}
+    <tr>
+      <td class="text-center bold">{{ s.shift_name }}</td>
+      <td class="text-right">{{ "{:,}".format(s.target_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(s.produced_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(s.accepted_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(s.rejected_qty) }}</td>
+      <td class="text-right bold">{{ "{:.2f}%".format(s.rejection_pct) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Section 3: Defect Pareto -->
+<div class="section-title">3. Defect Pareto Distribution</div>
+<div class="chart-container">
+  {% if charts.defect_pareto %}
+  <img src="{{ charts.defect_pareto }}" alt="Defect Pareto Chart">
+  {% endif %}
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Defect Code</th>
+      <th class="text-left">Defect Description</th>
+      <th>Category</th>
+      <th class="text-right">Rejected Pcs</th>
+      <th class="text-right">Scrap Pcs</th>
+      <th class="text-right">Rework Pcs</th>
+      <th class="text-right">Scrap Loss Cost</th>
+      <th class="text-right">% Share</th>
+      <th class="text-right">Cumulative %</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in defect_rows %}
+    <tr>
+      <td class="text-center bold">{{ d.defect_code }}</td>
+      <td class="text-left">{{ d.defect_name }}</td>
+      <td class="text-center">{{ d.category }}</td>
+      <td class="text-right">{{ "{:,}".format(d.rejected_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(d.scrap_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(d.reworkable_qty) }}</td>
+      <td class="text-right">INR {{ "{:,.0f}".format(d.scrap_cost) }}</td>
+      <td class="text-right">{{ "{:.1f}%".format(d.defect_pct) }}</td>
+      <td class="text-right bold">{{ "{:.1f}%".format(d.cumulative_pct) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Section 4: High Runner Parts -->
+<div class="section-title">4. High-Runner Casting Quality Matrix</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Part Number</th>
+      <th class="text-left">Description</th>
+      <th>Material Grade</th>
+      <th class="text-right">Poured Pcs</th>
+      <th class="text-right">Accepted Pcs</th>
+      <th class="text-right">Rejected Pcs</th>
+      <th class="text-right">Rejection %</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in part_rows %}
+    <tr>
+      <td class="text-center bold">{{ p.part_number }}</td>
+      <td class="text-left">{{ p.part_name }}</td>
+      <td class="text-center">{{ p.material_grade }}</td>
+      <td class="text-right">{{ "{:,}".format(p.produced_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(p.accepted_qty) }}</td>
+      <td class="text-right">{{ "{:,}".format(p.rejected_qty) }}</td>
+      <td class="text-right bold">{{ "{:.2f}%".format(p.rejection_pct) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

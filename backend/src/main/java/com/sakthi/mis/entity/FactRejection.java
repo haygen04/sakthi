@@ -89,3 +89,4 @@ public class FactRejection {
     public BigDecimal getScrapCost() { return scrapCost; }
     public void setScrapCost(BigDecimal scrapCost) { this.scrapCost = scrapCost; }
 }
+

@@ -41,3 +41,4 @@ public class DimDefect {
     public BigDecimal getStandardCost() { return standardCost; }
     public void setStandardCost(BigDecimal standardCost) { this.standardCost = standardCost; }
 }
+

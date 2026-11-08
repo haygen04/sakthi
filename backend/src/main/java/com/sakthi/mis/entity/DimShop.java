@@ -34,3 +34,4 @@ public class DimShop {
     public String getDivisionName() { return divisionName; }
     public void setDivisionName(String divisionName) { this.divisionName = divisionName; }
 }
+

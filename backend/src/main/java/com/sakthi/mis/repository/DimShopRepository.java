@@ -10,3 +10,4 @@ import java.util.Optional;
 public interface DimShopRepository extends JpaRepository<DimShop, Integer> {
     Optional<DimShop> findByShopCode(String shopCode);
 }
+

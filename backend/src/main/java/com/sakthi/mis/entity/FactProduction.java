@@ -101,3 +101,4 @@ public class FactProduction {
     public BigDecimal getGrossWeightKg() { return grossWeightKg; }
     public void setGrossWeightKg(BigDecimal grossWeightKg) { this.grossWeightKg = grossWeightKg; }
 }
+
